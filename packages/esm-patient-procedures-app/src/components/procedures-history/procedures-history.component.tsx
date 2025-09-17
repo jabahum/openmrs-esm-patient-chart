@@ -16,6 +16,8 @@ import { Table, TableBody, TableCell, TableRow, TableHead, TableHeader, Button }
 import styles from './procedures-history.scss';
 import { useProcedures } from '../../hooks/useProcedures';
 import { mutate } from 'swr';
+import dayjs from 'dayjs';
+
 interface ProceduresHistoryProps {
   patientUuid: string;
   launchStartVisitPrompt: () => void;
@@ -31,9 +33,7 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
 
   const config = useConfig<ConfigObject>();
 
-  // const procedureData = useProcedures(patientUuid, config.procedureEncounterType);
-
-  const procedures = [{ id: 'uuid4', name: 'tests', year: '2025' }];
+  const procedureData = useProcedures(patientUuid, config.procedureEncounterType);
 
   const launchProceduresForm = useCallback(() => {
     if (!currentVisit) {
@@ -55,23 +55,23 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
 
   const headers = [
     { key: 'procedure', header: t('procedure', 'Procedure') },
-    { key: 'year', header: t('year', 'Year') },
+    { key: 'year', header: t('date', 'Date') },
   ];
 
-  const tableRows = procedures.map((procedure) => ({
+  const tableRows = procedureData.procedures.map((procedure) => ({
     id: procedure.id,
-    procedure: procedure.name,
+    procedure: procedure.procedure,
     year: procedure.year,
   }));
 
   const { results: paginatedRows, currentPage, goTo } = usePagination(tableRows || [], pageSize);
   const showPagination = (tableRows?.length || 0) > pageSize;
 
-  if (procedures.length == 0) {
+  if (procedureData.procedures.length == 0) {
     return <EmptyState displayText={displayText} headerTitle={headerTitle} launchForm={launchProceduresForm} />;
   }
 
-  if (procedures.length != 0) {
+  if (procedureData.procedures.length != 0) {
     return (
       <div className={styles.widgetCard}>
         <CardHeader title={headerTitle}>
@@ -106,11 +106,9 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
                 {paginatedRows?.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell>
-                      <div>test</div>
+                      <div>{row.procedure}</div>
                     </TableCell>
-                    <TableCell>
-                      <div>test</div>
-                    </TableCell>
+                    <TableCell>{dayjs(row.year).format('YYYY-MM-DD')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
