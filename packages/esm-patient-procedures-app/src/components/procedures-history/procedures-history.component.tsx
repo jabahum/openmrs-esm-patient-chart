@@ -9,8 +9,8 @@ import {
   type ConfigObject,
   useConfig,
 } from '@openmrs/esm-framework';
-import { EmptyState, ErrorState, PatientChartPagination, CardHeader } from '@openmrs/esm-patient-common-lib';
-import React, { useCallback, useMemo, type ComponentProps } from 'react';
+import { EmptyState, PatientChartPagination, CardHeader } from '@openmrs/esm-patient-common-lib';
+import React, { useCallback, type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Table, TableBody, TableCell, TableRow, TableHead, TableHeader, Button } from '@carbon/react';
 import styles from './procedures-history.scss';
@@ -67,11 +67,11 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
   const { results: paginatedRows, currentPage, goTo } = usePagination(tableRows || [], pageSize);
   const showPagination = (tableRows?.length || 0) > pageSize;
 
-  if (procedureData.procedures.length == 0) {
+  if (procedureData.procedures.length === 0) {
     return <EmptyState displayText={displayText} headerTitle={headerTitle} launchForm={launchProceduresForm} />;
   }
 
-  if (procedureData.procedures.length != 0) {
+  if (procedureData.procedures.length !== 0) {
     return (
       <div className={styles.widgetCard}>
         <CardHeader title={headerTitle}>
