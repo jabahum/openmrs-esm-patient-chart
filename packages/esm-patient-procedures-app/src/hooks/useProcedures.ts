@@ -24,7 +24,7 @@ export function useProcedures(patientUuid: string, encounterTypeUuid: string) {
     data?.data.results?.map((encounter) => ({
       id: encounter.obs.find((ob) => ob.uuid).uuid,
       procedure: encounter.obs.find((ob) => ob.concept.uuid === config?.nameOfProcedurePerformedUuid)?.value?.display,
-      year: encounter.obs.find((ob) => ob.concept.uuid === config?.dayProcedurePerformedUuid)?.value,
+      date: encounter.obs.find((ob) => ob.concept.uuid === config?.dayProcedurePerformedUuid)?.value,
     })) ?? [];
   return {
     procedures,

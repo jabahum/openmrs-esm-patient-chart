@@ -2,8 +2,6 @@ import {
   AddIcon,
   launchWorkspace,
   useVisit,
-  formatDate,
-  parseDate,
   useLayoutType,
   usePagination,
   type ConfigObject,
@@ -61,7 +59,7 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
   const tableRows = procedureData.procedures.map((procedure) => ({
     id: procedure.id,
     procedure: procedure.procedure,
-    year: procedure.year,
+    date: procedure.date,
   }));
 
   const { results: paginatedRows, currentPage, goTo } = usePagination(tableRows || [], pageSize);
@@ -108,7 +106,7 @@ const ProceduresHistory: React.FC<ProceduresHistoryProps> = ({ patientUuid, laun
                     <TableCell>
                       <div>{row.procedure}</div>
                     </TableCell>
-                    <TableCell>{dayjs(row.year).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>{dayjs(row.date).format('YYYY-MM-DD')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
